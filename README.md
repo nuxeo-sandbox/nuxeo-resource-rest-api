@@ -24,7 +24,9 @@ docker compose up
 Example of API call
 
 ```
-curl --request GET 'http://localhost:8080/nuxeo/api/v1/resource/File/123?schemas=file' --header 'Authorization: Basic QWRtaW5pc3RyYXRvcjpBZG1pbmlzdHJhdG9y'
+curl --request GET 'http://localhost:8080/nuxeo/api/v1/content/File/123?schemas=file' --header 'Authorization: Basic QWRtaW5pc3RyYXRvcjpBZG1pbmlzdHJhdG9y'
+
+curl --request GET 'http://localhost:8080/nuxeo/api/v1/action/Document.CreateVersion?documentId=123&schemas=dublincore&increment=Major' --header 'Authorization: Basic QWRtaW5pc3RyYXRvcjpBZG1pbmlzdHJhdG9y'
 ```
 
 Where File is the document type and 123 is the value of the property `dc:title`
