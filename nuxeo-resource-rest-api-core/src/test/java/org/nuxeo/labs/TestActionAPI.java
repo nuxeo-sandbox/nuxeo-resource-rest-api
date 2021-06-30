@@ -27,6 +27,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
+import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.test.annotations.Granularity;
 import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
 import org.nuxeo.ecm.restapi.test.BaseTest;
@@ -39,7 +40,6 @@ import org.nuxeo.runtime.test.runner.TransactionalFeature;
 import javax.inject.Inject;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
-
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
@@ -50,7 +50,7 @@ import static org.junit.Assert.assertEquals;
 @Deploy({
         "org.nuxeo.labs.nuxeo-resource-rest-api-core"
 })
-public class TestResourceAPI extends BaseTest {
+public class TestActionAPI extends BaseTest {
 
     @Inject
     public CoreSession session;
@@ -59,45 +59,30 @@ public class TestResourceAPI extends BaseTest {
     protected TransactionalFeature transactionalFeature;
 
     @Test
-    public void testNotFound() {
-        ClientResponse response = getResponse(RequestType.GET, "/resource/File/123?schemas=dublincore");
-        assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
-    }
-
-    @Test
-    public void testFound() throws IOException {
+    public void testCreateVersion() throws IOException {
         //create document
         DocumentModel file = session.createDocumentModel(session.getRootDocument().getPathAsString(),"File","File");
         file.setPropertyValue("dc:title","123");
-        session.createDocument(file);
-        transactionalFeature.nextTransaction();
+        file = session.createDocument(file);
+        Assert.assertTrue(file.isCheckedOut());
 
-        ClientResponse response = getResponse(RequestType.GET, "/resource/File/123");
-        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
-        JsonNode node = mapper.readTree(response.getEntityInputStream());
-        JsonNode properties = node.get("properties");
-        Assert.assertTrue(properties.isObject());
-    }
-
-    @Test
-    public void testFoundAndGetProperties() throws IOException {
-        //create document
-        DocumentModel file = session.createDocumentModel(session.getRootDocument().getPathAsString(),"File","File");
-        file.setPropertyValue("dc:title","123");
-        session.createDocument(file);
+        // commit the transaction and record the change in the DB
         transactionalFeature.nextTransaction();
 
         MultivaluedMap<String, String> queryParams = new MultivaluedMapImpl();
-        queryParams.add("schemas","file");
-        ClientResponse response = getResponse(RequestType.GET, "/resource/File/123",queryParams);
+        queryParams.add("documentId",file.getId());
+        queryParams.add("increment","Major");
+        ClientResponse response = getResponse(RequestType.GET, "/action/Document.CreateVersion",queryParams);
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
         JsonNode node = mapper.readTree(response.getEntityInputStream());
-        JsonNode properties = node.get("properties");
-        Assert.assertTrue(properties.isObject());
-        JsonNode content = properties.get("file:content");
-        Assert.assertNotNull(content);
-        Assert.assertTrue(content.isNull());
-    }
+        JsonNode entityType = node.get("entity-type");
+        Assert.assertEquals("document",entityType.asText());
 
+        //Get Version
+        DocumentModelList versions = session.query(
+                String.format(
+                        "Select * From Document Where ecm:versionVersionableId = '%s' AND ecm:isVersion = 1", file.getId()));
+        Assert.assertEquals(1,versions.size());
+    }
 
 }
