@@ -43,6 +43,7 @@ import javax.ws.rs.core.Response;
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
+import static org.nuxeo.ecm.restapi.server.jaxrs.ContentAPI.CUSTOM_RESPONSE_HEADER;
 
 @RunWith(FeaturesRunner.class)
 @Features({RestServerFeature.class, TransactionalFeature.class})
@@ -74,6 +75,11 @@ public class TestContentAPI extends BaseTest {
 
         ClientResponse response = getResponse(RequestType.GET, "/content/File/123");
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+
+        //check custom header
+        Assert.assertTrue(response.getHeaders().containsKey(CUSTOM_RESPONSE_HEADER));
+        Assert.assertEquals("123",response.getHeaders().getFirst(CUSTOM_RESPONSE_HEADER));
+
         JsonNode node = mapper.readTree(response.getEntityInputStream());
         JsonNode properties = node.get("properties");
         Assert.assertTrue(properties.isObject());
