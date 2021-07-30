@@ -20,6 +20,8 @@
 package org.nuxeo.ecm.restapi.server.jaxrs.batch;
 
 import org.apache.commons.codec.binary.Base64InputStream;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.nuxeo.ecm.automation.server.jaxrs.batch.Batch;
 import org.nuxeo.ecm.automation.server.jaxrs.batch.BatchFileEntry;
 import org.nuxeo.ecm.automation.server.jaxrs.batch.handler.BatchFileInfo;
@@ -30,6 +32,8 @@ import org.nuxeo.ecm.core.api.Blobs;
 import java.io.IOException;
 
 public class Base64BatchHandler extends DefaultBatchHandler {
+
+    private static final Log log = LogFactory.getLog(Base64BatchHandler.class);
 
     @Override
     public boolean completeUpload(String batchId, String fileIndex, BatchFileInfo fileInfo) {
@@ -42,6 +46,7 @@ public class Base64BatchHandler extends DefaultBatchHandler {
             batch.addFile(fileIndex, decodedBlob, fileInfo.getFilename(), fileInfo.getMimeType());
             return true;
         } catch (IOException e) {
+            log.error(e);
             return false;
         }
     }
