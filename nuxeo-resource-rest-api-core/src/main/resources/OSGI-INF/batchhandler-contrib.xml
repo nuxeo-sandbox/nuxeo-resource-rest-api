@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<component name="org.nuxeo.labs.server.batch.handler.base64" version="1.0">
+
+  <requires>org.nuxeo.ecm.core.transientstore.TransientStorageComponent</requires>
+
+  <extension target="org.nuxeo.ecm.automation.server.BatchManager"
+             point="handlers">
+    <batchHandler>
+      <name>base64</name>
+      <class>org.nuxeo.ecm.restapi.server.jaxrs.batch.Base64BatchHandler</class>
+      <property name="transientStore">BatchManagerCache</property>
+    </batchHandler>
+  </extension>
+
+</component>
