@@ -7,4 +7,4 @@ Bundle-Name: nuxeo-resource-rest-api-core
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: org.nuxeo.labs.nuxeo-resource-rest-api-core;singleton=true
 Fragment-Host: org.nuxeo.ecm.platform.restapi.server
-Nuxeo-Component: OSGI-INF/batchhandler-contrib.xml
+Nuxeo-Component: OSGI-INF/batchhandler-contrib.xml, OSGI-INF/marshallers-contrib.xml

@@ -1,0 +1,17 @@
+{
+  "entity-type": "document",
+  "name":"newDoc",
+  "type": "File",
+  "properties": {
+    "dc:title": "The new document",
+    "dc:description": "Created via a very cool and easy REST API",
+    "common:icon": "/icons/file.gif",
+    "common:icon-expanded": null,
+    "common:size": null,
+    "file:content": {
+      "filename": "sample.txt",
+      "base64": "VGhpcyBpcyBhIHRlc3Q=",
+      "mimetype": "text/plain"
+    }
+  }
+}
