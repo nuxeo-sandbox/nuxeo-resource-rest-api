@@ -1,0 +1,34 @@
+<component name="org.nuxeo.labs.resource.api.endpoint.test.chain" version="1.0">
+
+    <extension target="org.nuxeo.automation.scripting.internals.AutomationScriptingComponent" point="operation">
+
+        <scriptedOperation id="javascript.test_exception">
+            <inputType>void</inputType>
+            <outputType>string</outputType>
+            <category>javascript</category>
+            <description></description>
+            <script>
+                function run(input,params) {
+                    var doc = Document.Create(input, {
+                        'type': 'File',
+                        'name': 'TheDOC',
+                        'properties': {
+                            'dc:title':'TheDOC'
+                        }
+                    });
+
+                    if (true) {
+
+                        var message = {
+                            message:'There was an error'
+                        };
+
+                        throw JSON.stringify(message);
+                    }
+                }
+            </script>
+        </scriptedOperation>
+
+    </extension>
+
+</component>

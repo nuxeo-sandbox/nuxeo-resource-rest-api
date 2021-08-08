@@ -28,6 +28,8 @@ import org.junit.runner.RunWith;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
+import org.nuxeo.ecm.core.api.DocumentNotFoundException;
+import org.nuxeo.ecm.core.api.PathRef;
 import org.nuxeo.ecm.core.test.annotations.Granularity;
 import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
 import org.nuxeo.ecm.restapi.test.BaseTest;
@@ -83,6 +85,19 @@ public class TestActionAPI extends BaseTest {
                 String.format(
                         "Select * From Document Where ecm:versionVersionableId = '%s' AND ecm:isVersion = 1", file.getId()));
         Assert.assertEquals(1,versions.size());
+    }
+
+    @Test(expected = DocumentNotFoundException.class)
+    @Deploy("nuxeo-resource-rest-api-endpoint:test-exception-automation-script.xml")
+    public void testCatchExceptionMessage() throws IOException {
+        MultivaluedMap<String, String> queryParams = new MultivaluedMapImpl();
+        queryParams.add("documentId",session.getRootDocument().getId());
+        ClientResponse response = getResponse(RequestType.GET, "/action/javascript.test_exception",queryParams);
+        assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
+        JsonNode node = mapper.readTree(response.getEntityInputStream());
+        JsonNode entityType = node.get("message");
+        Assert.assertEquals("There was an error",entityType.asText());
+        session.getDocument(new PathRef(session.getRootDocument().getPathAsString()+"TheDOC"));
     }
 
 }

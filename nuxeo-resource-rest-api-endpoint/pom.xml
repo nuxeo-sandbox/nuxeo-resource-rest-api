@@ -32,6 +32,10 @@
             <groupId>org.nuxeo.ecm.platform</groupId>
             <artifactId>nuxeo-rest-api-io</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.nuxeo.labs</groupId>
+            <artifactId>nuxeo-resource-rest-api-core</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>junit</groupId>
