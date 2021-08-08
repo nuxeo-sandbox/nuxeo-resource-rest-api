@@ -17,7 +17,7 @@
  *     Michael Vachette
  */
 
-package org.nuxeo.ecm.restapi.server.jaxrs.filter;
+package org.nuxeo.labs.resource.api.core.filter;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

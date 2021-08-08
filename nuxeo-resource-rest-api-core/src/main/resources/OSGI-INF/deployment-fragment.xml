@@ -8,7 +8,7 @@
             <display-name>Custom HEADER Filter</display-name>
             <filter-name>CustomHeaderFilter</filter-name>
             <filter-class>
-                org.nuxeo.ecm.restapi.server.jaxrs.filter.CustomAPIFilter
+                org.nuxeo.labs.resource.api.core.filter.CustomAPIFilter
             </filter-class>
         </filter>
         <filter-mapping>

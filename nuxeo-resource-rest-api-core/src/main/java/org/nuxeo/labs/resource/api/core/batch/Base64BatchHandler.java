@@ -17,7 +17,7 @@
  *     Michael Vachette
  */
 
-package org.nuxeo.ecm.restapi.server.jaxrs.batch;
+package org.nuxeo.labs.resource.api.core.batch;
 
 import org.apache.commons.codec.binary.Base64InputStream;
 import org.apache.commons.logging.Log;

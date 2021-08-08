@@ -17,7 +17,7 @@
  *     Michael Vachette
  */
 
-package org.nuxeo.labs;
+package org.nuxeo.labs.resource.api.core;
 
 import com.sun.jersey.api.client.ClientResponse;
 import org.junit.Test;
@@ -46,9 +46,7 @@ import static org.junit.Assert.assertNotNull;
 @RunWith(FeaturesRunner.class)
 @Features({RestServerFeature.class, TransactionalFeature.class})
 @RepositoryConfig(cleanup = Granularity.METHOD)
-@Deploy({
-        "org.nuxeo.labs.nuxeo-resource-rest-api-core"
-})
+@Deploy({"nuxeo-resource-rest-api-core"})
 public class TestB64JsonBlobReader extends BaseTest {
 
     @Inject

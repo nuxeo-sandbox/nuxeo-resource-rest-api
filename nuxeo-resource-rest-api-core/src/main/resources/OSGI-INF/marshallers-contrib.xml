@@ -4,6 +4,6 @@
   <extension target="org.nuxeo.ecm.core.io.MarshallerRegistry" point="marshallers">
     <!-- blob reader -->
     <register class="org.nuxeo.ecm.automation.core.io.BlobJsonReader" enable="false" />
-    <register class="org.nuxeo.ecm.restapi.server.jaxrs.io.CustomBlobJsonReader" enable="true" />
+    <register class="org.nuxeo.labs.resource.api.core.io.CustomBlobJsonReader" enable="true" />
   </extension>
 </component>

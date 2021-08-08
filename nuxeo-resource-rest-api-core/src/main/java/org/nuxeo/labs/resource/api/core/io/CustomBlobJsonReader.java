@@ -17,7 +17,7 @@
  *     Michael Vachette
  */
 
-package org.nuxeo.ecm.restapi.server.jaxrs.io;
+package org.nuxeo.labs.resource.api.core.io;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.commons.codec.binary.Base64;

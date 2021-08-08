@@ -25,6 +25,7 @@
     <module>nuxeo-resource-rest-api-core</module>
     <module>nuxeo-resource-rest-api-package</module>
     <module>nuxeo-resource-rest-api-docker</module>
+    <module>nuxeo-resource-rest-api-endpoint</module>
   </modules>
 
   <scm />
@@ -40,6 +41,11 @@
       <dependency>
         <groupId>org.nuxeo.labs</groupId>
         <artifactId>nuxeo-resource-rest-api-core</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.nuxeo.labs</groupId>
+        <artifactId>nuxeo-resource-rest-api-endpoint</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
