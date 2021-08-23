@@ -33,6 +33,10 @@
             <artifactId>nuxeo-rest-api-io</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.nuxeo.ecm.routing</groupId>
+            <artifactId>nuxeo-routing-rest-api</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.nuxeo.labs</groupId>
             <artifactId>nuxeo-resource-rest-api-core</artifactId>
         </dependency>
@@ -50,6 +54,32 @@
         <dependency>
             <groupId>org.nuxeo.ecm.platform</groupId>
             <artifactId>nuxeo-rest-api-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.nuxeo.ecm.routing</groupId>
+            <artifactId>nuxeo-routing-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.nuxeo.ecm.platform</groupId>
+            <artifactId>nuxeo-platform-audit-core</artifactId>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.nuxeo.ecm.routing</groupId>
+            <artifactId>nuxeo-routing-default</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.nuxeo.ecm.platform</groupId>
+            <artifactId>nuxeo-platform-webapp-types</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.nuxeo.ecm.platform</groupId>
+            <artifactId>nuxeo-platform-default-config</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
