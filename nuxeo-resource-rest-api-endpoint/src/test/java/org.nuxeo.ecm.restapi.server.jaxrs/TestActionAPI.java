@@ -95,8 +95,9 @@ public class TestActionAPI extends BaseTest {
         ClientResponse response = getResponse(RequestType.GET, "/action/javascript.test_exception",queryParams);
         assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
         JsonNode node = mapper.readTree(response.getEntityInputStream());
-        JsonNode entityType = node.get("message");
-        Assert.assertEquals("There was an error",entityType.asText());
+        JsonNode entityType = node.get("messages");
+        Assert.assertTrue(entityType.isArray());
+        Assert.assertEquals("There was an error",entityType.get(0).asText());
         session.getDocument(new PathRef(session.getRootDocument().getPathAsString()+"TheDOC"));
     }
 

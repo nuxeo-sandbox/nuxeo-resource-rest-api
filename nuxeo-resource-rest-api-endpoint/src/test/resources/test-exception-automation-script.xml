@@ -20,7 +20,7 @@
                     if (true) {
 
                         var message = {
-                            message:'There was an error'
+                            messages:['There was an error']
                         };
 
                         throw JSON.stringify(message);
