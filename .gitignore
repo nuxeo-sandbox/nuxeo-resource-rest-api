@@ -24,6 +24,7 @@ bin/
 .project
 *.pyc
 .pydevproject
+nashorn_code_cache
 *.rej
 *~bak
 *-bak

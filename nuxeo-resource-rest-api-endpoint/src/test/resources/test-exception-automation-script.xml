@@ -4,7 +4,19 @@
 
         <scriptedOperation id="javascript.test_exception">
             <inputType>void</inputType>
-            <outputType>string</outputType>
+            <outputType>void</outputType>
+            <category>javascript</category>
+            <description></description>
+            <script>
+                function run(input,params) {
+                    return javascript.sub_test_exception(input,{});
+                }
+            </script>
+        </scriptedOperation>
+
+        <scriptedOperation id="javascript.sub_test_exception">
+            <inputType>void</inputType>
+            <outputType>void</outputType>
             <category>javascript</category>
             <description></description>
             <script>
@@ -18,12 +30,8 @@
                     });
 
                     if (true) {
-
-                        var message = {
-                            messages:['There was an error']
-                        };
-
-                        throw JSON.stringify(message);
+                        var messages = ['There was an error'];
+                        throw JSON.stringify(messages);
                     }
                 }
             </script>

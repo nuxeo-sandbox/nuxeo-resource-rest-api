@@ -7,7 +7,9 @@ import org.nuxeo.ecm.automation.OperationException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.IdRef;
+import org.nuxeo.ecm.core.api.NuxeoException;
 import org.nuxeo.ecm.core.io.registry.context.RenderingContext;
+import org.nuxeo.ecm.restapi.server.jaxrs.util.ExceptionHelper;
 import org.nuxeo.ecm.webengine.jaxrs.coreiodelegate.RenderingContextWebUtils;
 import org.nuxeo.ecm.webengine.model.WebObject;
 import org.nuxeo.ecm.webengine.model.impl.DefaultObject;
@@ -18,8 +20,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.UndeclaredThrowableException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -66,17 +66,11 @@ public class ActionAPI extends DefaultObject {
             session.save();
             return result;
         } catch (OperationException e) {
-            Throwable cause = e.getCause();
-            // in this case, the cause is a nashorn exception
-            if (cause instanceof UndeclaredThrowableException) {
-                Throwable t = ((UndeclaredThrowableException)cause).getUndeclaredThrowable();
-                if (t instanceof InvocationTargetException) {
-                    Throwable target = ((InvocationTargetException)t).getTargetException();
-                    String message = target.getMessage();
-                    return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(message).type("application/json").build();
-                }
+            String message = ExceptionHelper.findErrorMessage(e);
+            if (StringUtils.isNotEmpty(message)) {
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(message).type("application/json").build();
             }
-            return e;
+            throw new NuxeoException(e);
         }
     }
 }

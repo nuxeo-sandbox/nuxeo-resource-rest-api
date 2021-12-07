@@ -89,15 +89,27 @@ public class TestActionAPI extends BaseTest {
 
     @Test(expected = DocumentNotFoundException.class)
     @Deploy("nuxeo-resource-rest-api-endpoint:test-exception-automation-script.xml")
-    public void testCatchExceptionMessage() throws IOException {
+    public void testCatchExceptionMessage1level() throws IOException {
+        MultivaluedMap<String, String> queryParams = new MultivaluedMapImpl();
+        queryParams.add("documentId",session.getRootDocument().getId());
+        ClientResponse response = getResponse(RequestType.GET, "/action/javascript.sub_test_exception",queryParams);
+        assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
+        JsonNode node = mapper.readTree(response.getEntityInputStream());
+        Assert.assertTrue(node.isArray());
+        Assert.assertEquals("There was an error",node.get(0).asText());
+        session.getDocument(new PathRef(session.getRootDocument().getPathAsString()+"TheDOC"));
+    }
+
+    @Test(expected = DocumentNotFoundException.class)
+    @Deploy("nuxeo-resource-rest-api-endpoint:test-exception-automation-script.xml")
+    public void testCatchExceptionMessage2level() throws IOException {
         MultivaluedMap<String, String> queryParams = new MultivaluedMapImpl();
         queryParams.add("documentId",session.getRootDocument().getId());
         ClientResponse response = getResponse(RequestType.GET, "/action/javascript.test_exception",queryParams);
         assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
         JsonNode node = mapper.readTree(response.getEntityInputStream());
-        JsonNode entityType = node.get("messages");
-        Assert.assertTrue(entityType.isArray());
-        Assert.assertEquals("There was an error",entityType.get(0).asText());
+        Assert.assertTrue(node.isArray());
+        Assert.assertEquals("There was an error",node.get(0).asText());
         session.getDocument(new PathRef(session.getRootDocument().getPathAsString()+"TheDOC"));
     }
 

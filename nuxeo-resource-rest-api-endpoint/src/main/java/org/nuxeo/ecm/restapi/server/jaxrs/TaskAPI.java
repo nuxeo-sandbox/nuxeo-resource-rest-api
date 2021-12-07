@@ -19,11 +19,12 @@
 
 package org.nuxeo.ecm.restapi.server.jaxrs;
 
-import org.nuxeo.ecm.automation.OperationException;
+import org.apache.commons.lang3.StringUtils;
 import org.nuxeo.ecm.core.api.NuxeoException;
 import org.nuxeo.ecm.platform.routing.api.exception.DocumentRouteException;
 import org.nuxeo.ecm.platform.routing.core.io.TaskCompletionRequest;
 import org.nuxeo.ecm.restapi.server.jaxrs.routing.TaskObject;
+import org.nuxeo.ecm.restapi.server.jaxrs.util.ExceptionHelper;
 import org.nuxeo.ecm.webengine.model.WebObject;
 
 import javax.ws.rs.PUT;
@@ -32,8 +33,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.UndeclaredThrowableException;
 
 @WebObject(type = "task")
 @Produces(MediaType.APPLICATION_JSON)
@@ -47,17 +46,9 @@ public class TaskAPI extends TaskObject {
         try {
             return super.completeTask(taskId,action,taskCompletionRequest);
         } catch (DocumentRouteException e) {
-            Throwable cause = e.getCause();
-            if (cause instanceof OperationException) {
-                Throwable automationCause = cause.getCause();
-                if (automationCause instanceof UndeclaredThrowableException) {
-                    Throwable t = ((UndeclaredThrowableException)automationCause).getUndeclaredThrowable();
-                    if (t instanceof InvocationTargetException) {
-                        Throwable target = ((InvocationTargetException)t).getTargetException();
-                        String message = target.getMessage();
-                        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(message).type("application/json").build();
-                    }
-                }
+            String message = ExceptionHelper.findErrorMessage(e);
+            if (StringUtils.isNotEmpty(message)) {
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(message).type("application/json").build();
             }
             throw new NuxeoException(e);
         }
